@@ -1,0 +1,15 @@
+{
+  "name": "instabot",
+  "version": "1.0.0",
+  "description": "Bot for comments in post's girlfriend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "pgsilva",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "instagram-node": "^0.5.8"
+  }
+}
