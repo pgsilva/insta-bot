@@ -6,18 +6,20 @@ var msg, token;
 const app = express();
 const port = process.env.PORT || 3000
 
-function robot() {
-    fs.readFile('comment.txt', 'utf8', function (err, data) {
-        if (err) throw err;
-        console.log(data);
-        msg = data;
+exports.robot = function (req, res) {
+    if (req) {
+        fs.readFile('comment.txt', 'utf8', function (err, data) {
+            if (err) throw err;
+            console.log(data);
+            msg = data;
 
-        postMessage();
-    });
+            postMessage();
+        });
+    }
 };
 
 function postMessage() {
-    let user = '0000000'; //id's user
+    let user = 'xxxxxx'; //id's user
     if (msg) {
         /* OPTIONS: { [count], [min_timestamp], [max_timestamp], [min_id], [max_id] }; */
         api.user_media_recent(user, [10],
@@ -34,15 +36,16 @@ function postMessage() {
 };
 
 api.use({
-    client_id: 'XXX',
-    client_secret: 'XXX'
+    client_id: 'xxxxxxxx',
+    client_secret: 'xxxxxxxx'
 });
+
+//api.use({ access_token: 'xxxxxxxxx' });
 
 var redirect_uri = 'http://localhost:3000/handleauth';
 
 exports.authorize_user = function (req, res) {
     res.redirect(api.get_authorization_url(redirect_uri, { scope: ['likes'], state: 'a state' }));
-    robot();
 };
 
 exports.handleauth = function (req, res) {
@@ -53,7 +56,6 @@ exports.handleauth = function (req, res) {
         } else {
             console.log('Yay! Access token is ' + result.access_token);
             res.send('You made it!!');
-            return result.access_token;
         }
     });
 };
@@ -61,5 +63,6 @@ exports.handleauth = function (req, res) {
 
 app.get('/authorize_user', exports.authorize_user);
 app.get('/handleauth', exports.handleauth);
+app.get('/robot', exports.robot);
 
 app.listen(port, () => console.log(`server listening on port ${port}!`))
