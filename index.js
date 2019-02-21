@@ -8,11 +8,11 @@ const app = express();
 const port = process.env.PORT || 3000
 
 api.use({
-    client_id: '74f62af4c9c4454cb2c32eb4d1e6d96c',
-    client_secret: '27123e5da8864f67b7e83f7b2dbf3899'
+    client_id: 'xxx',
+    client_secret: 'xxx'
 });
 
-api.use({ access_token: '1414307423.74f62af.23a1a7f5a0e94614ab7bfeadf24d26bf' });
+//api.use({ access_token: 'xxx' });
 
 var redirect_uri = 'http://localhost:3000/handleauth';
 
@@ -22,8 +22,8 @@ exports.authorize_user = function (req, res) {
 
 exports.handleauth = function (req, res) {
     api.use({
-        client_id: '74f62af4c9c4454cb2c32eb4d1e6d96c',
-        client_secret: '27123e5da8864f67b7e83f7b2dbf3899'
+        client_id: 'xxxx',
+        client_secret: 'xxx'
     });
     api.authorize_user(req.query.code, redirect_uri, function (err, result) {
         if (err) {
@@ -53,7 +53,7 @@ app.get('/robot', (req, res) => {
 });
 
 function getUsername(username) {
-    api.use({ access_token: '1414307423.74f62af.23a1a7f5a0e94614ab7bfeadf24d26bf' });
+    api.use({ access_token: 'xxx' });
     api.user_search(username, [1], function (err, users, remaining, limit) {
         if (err) throw err;
         console.log(users);
@@ -62,7 +62,7 @@ function getUsername(username) {
     });
 };
 function postMessage() {
-    api.use({ access_token: '1414307423.74f62af.23a1a7f5a0e94614ab7bfeadf24d26bf' });
+    api.use({ access_token: 'xxx' });
     if (user) {
         /* OPTIONS: { [count], [min_timestamp], [max_timestamp], [min_id], [max_id] }; */
         api.user_media_recent(user.user_id, [10],
