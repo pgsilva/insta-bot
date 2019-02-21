@@ -1,3 +1,4 @@
+//https://api.instagram.com/oauth/authorize/?client_id=74f62af4c9c4454cb2c32eb4d1e6d96c&redirect_uri=http://localhost:3000/handleauth&response_type=code&scope=public_content
 const api = require('instagram-node').instagram();
 const fs = require('fs');
 var http = require('http');
@@ -20,9 +21,13 @@ exports.authorize_user = function (req, res) {
 };
 
 exports.handleauth = function (req, res) {
+    api.use({
+        client_id: '74f62af4c9c4454cb2c32eb4d1e6d96c',
+        client_secret: '27123e5da8864f67b7e83f7b2dbf3899'
+    });
     api.authorize_user(req.query.code, redirect_uri, function (err, result) {
         if (err) {
-            console.log(err.body);
+            console.log(err);
             res.send("Didn't work");
         } else {
             console.log('Yay! Access token is ' + result.access_token);
@@ -39,7 +44,7 @@ app.get('/robot', (req, res) => {
         fs.readFile('comment.txt', 'utf8', function (err, data) {
             if (err) throw err;
             console.log(data);
-            msg = data;       
+            msg = data;
             getUsername(req.query.user);
         });
     } else {
@@ -47,7 +52,8 @@ app.get('/robot', (req, res) => {
     }
 });
 
-function getUsername(username){
+function getUsername(username) {
+    api.use({ access_token: '1414307423.74f62af.23a1a7f5a0e94614ab7bfeadf24d26bf' });
     api.user_search(username, [1], function (err, users, remaining, limit) {
         if (err) throw err;
         console.log(users);
@@ -56,7 +62,7 @@ function getUsername(username){
     });
 };
 function postMessage() {
-     
+    api.use({ access_token: '1414307423.74f62af.23a1a7f5a0e94614ab7bfeadf24d26bf' });
     if (user) {
         /* OPTIONS: { [count], [min_timestamp], [max_timestamp], [min_id], [max_id] }; */
         api.user_media_recent(user.user_id, [10],
