@@ -6,22 +6,19 @@ var msg, token;
 const app = express();
 const port = process.env.PORT || 3000
 
-exports.robot = function (req, res) {
-    if (req) {
-        fs.readFile('comment.txt', 'utf8', function (err, data) {
-            if (err) throw err;
-            console.log(data);
-            msg = data;
+function robot() {
+    fs.readFile('comment.txt', 'utf8', function (err, data) {
+        if (err) throw err;
+        console.log(data);
+        msg = data;
 
-            postMessage();
-        });
-    }
+        postMessage();
+    });
 };
 
 function postMessage() {
     let user = '0000000'; //id's user
     if (msg) {
-        token = exports.handleauth
         /* OPTIONS: { [count], [min_timestamp], [max_timestamp], [min_id], [max_id] }; */
         api.user_media_recent(user, [10],
             function (err, medias, pagination, remaining, limit) {
@@ -37,14 +34,15 @@ function postMessage() {
 };
 
 api.use({
-    client_id: '00000000000000000000000',
-    client_secret: '00000000000000000000000'
+    client_id: 'XXX',
+    client_secret: 'XXX'
 });
 
 var redirect_uri = 'http://localhost:3000/handleauth';
 
 exports.authorize_user = function (req, res) {
     res.redirect(api.get_authorization_url(redirect_uri, { scope: ['likes'], state: 'a state' }));
+    robot();
 };
 
 exports.handleauth = function (req, res) {
@@ -59,8 +57,9 @@ exports.handleauth = function (req, res) {
         }
     });
 };
+
+
 app.get('/authorize_user', exports.authorize_user);
 app.get('/handleauth', exports.handleauth);
-app.get('/robot', exports.robot);
 
 app.listen(port, () => console.log(`server listening on port ${port}!`))
