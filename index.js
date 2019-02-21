@@ -19,7 +19,7 @@ exports.robot = function (req, res) {
 };
 
 function postMessage() {
-    let user = '1098348926'; //id's user
+    let user = '0000000'; //id's user
     if (msg) {
         token = exports.handleauth
         /* OPTIONS: { [count], [min_timestamp], [max_timestamp], [min_id], [max_id] }; */
@@ -37,8 +37,8 @@ function postMessage() {
 };
 
 api.use({
-    client_id: '74f62af4c9c4454cb2c32eb4d1e6d96c',
-    client_secret: '27123e5da8864f67b7e83f7b2dbf3899'
+    client_id: '00000000000000000000000',
+    client_secret: '00000000000000000000000'
 });
 
 var redirect_uri = 'http://localhost:3000/handleauth';
